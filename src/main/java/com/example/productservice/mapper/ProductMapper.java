@@ -18,6 +18,7 @@ public interface ProductMapper {
     @Mapping(target = "updatedAt", ignore = true)
     Product toEntity(ProductRequestDTO dto);
 
+    @Mapping(target = "categoryId", source = "category.id")
     ProductResponseDTO toDto(Product product);
 //
 //    @Mapping(target = "product", ignore = true)

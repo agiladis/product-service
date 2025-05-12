@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/dashboard/products")
@@ -41,6 +42,19 @@ public class ProductController {
                         .status("success")
                         .message("Products fetched successfully")
                         .data(products)
+                        .build()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> getById(@PathVariable UUID id) {
+        ProductResponseDTO product = productService.getProductById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.<ProductResponseDTO>builder()
+                        .status("success")
+                        .message("Product fetched successfully")
+                        .data(product)
                         .build()
         );
     }
