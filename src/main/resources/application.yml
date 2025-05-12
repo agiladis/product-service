@@ -5,6 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5431/product_service_db
     username: postgres
     password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate.ddl-auto: validate  # flyway akan handle DDL
     properties:
