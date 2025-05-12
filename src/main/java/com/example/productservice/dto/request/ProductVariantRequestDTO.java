@@ -8,7 +8,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-class ProductVariantRequestDTO {
+public class ProductVariantRequestDTO {
     @NotBlank
     private String sku;
 
