@@ -15,6 +15,8 @@ public class ProductVariantRequestDTO {
     @NotBlank
     private String size;
 
+    private String color;
+
     @NotNull
     @Positive
     private BigDecimal price;
