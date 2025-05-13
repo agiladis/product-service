@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +56,51 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll().stream()
                 .map(productMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public ProductResponseDTO getProductById(UUID id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+
+        return productMapper.toDto(product);
+    }
+
+    @Override
+    public ProductResponseDTO updateProduct(UUID id, ProductRequestDTO dto) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        // Update product fields
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setCategory(category);
+
+        // Clear past variant
+        product.getVariants().clear();
+        List<ProductVariant> newVariants = dto.getVariants().stream().map(v -> {
+            ProductVariant variant = new ProductVariant();
+            variant.setSku(v.getSku());
+            variant.setSize(v.getSize());
+            variant.setColor(v.getColor());
+            variant.setPrice(v.getPrice());
+            variant.setProduct(product);
+            return variant;
+        }).toList();
+        product.getVariants().addAll(newVariants);
+
+        Product updated = productRepository.save(product);
+        return productMapper.toDto(updated);
+    }
+
+    @Override
+    public void deleteProduct(UUID id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+
+        productRepository.delete(product);
     }
 }
