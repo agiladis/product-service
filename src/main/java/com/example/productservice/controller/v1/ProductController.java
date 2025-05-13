@@ -58,4 +58,21 @@ public class ProductController {
                         .build()
         );
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody ProductRequestDTO request
+    ) {
+
+        ProductResponseDTO response = productService.updateProduct(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.<ProductResponseDTO>builder()
+                        .status("success")
+                        .message("product updated successfully")
+                        .data(response)
+                        .build()
+        );
+    }
 }
