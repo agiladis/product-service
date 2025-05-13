@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -72,6 +73,19 @@ public class ProductController {
                         .status("success")
                         .message("product updated successfully")
                         .data(response)
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> delete(@PathVariable UUID id) {
+        productService.deleteProduct(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status("success")
+                        .message("Product deleted successfully")
+                        .data(null)
                         .build()
         );
     }

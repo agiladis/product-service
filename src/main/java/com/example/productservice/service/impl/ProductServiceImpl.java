@@ -95,4 +95,12 @@ public class ProductServiceImpl implements ProductService {
         Product updated = productRepository.save(product);
         return productMapper.toDto(updated);
     }
+
+    @Override
+    public void deleteProduct(UUID id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+
+        productRepository.delete(product);
+    }
 }
