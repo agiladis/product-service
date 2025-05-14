@@ -16,6 +16,7 @@ public class ProductRequestDTO {
     @Size(max = 100, message = "Name must be less than 100 characters")
     private String name;
 
+    @NotNull(message = "Description cannot be null")
     private String description;
 
     @NotNull(message = "Category ID is required")
@@ -23,5 +24,5 @@ public class ProductRequestDTO {
 
     @Valid // validasi nested DTO
     @NotEmpty(message = "At least one variant is required")
-    private List<ProductVariantRequestDTO> variants;
+    private List<@Valid  ProductVariantRequestDTO> variants;
 }

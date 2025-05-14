@@ -3,12 +3,11 @@ package com.example.productservice.controller.v1.client;
 import com.example.productservice.dto.response.ApiResponse;
 import com.example.productservice.dto.response.ProductResponseDTO;
 import com.example.productservice.service.ProductService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +20,10 @@ public class ProductClientController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getAll() {
+    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getAll(
+            @RequestParam(defaultValue = "1") @Min(0) int page,
+            @RequestParam(defaultValue = "25") @Max(100) int size
+    ) {
         List<ProductResponseDTO> products = productService.getAllProduct();
 
         return ResponseEntity.ok(
